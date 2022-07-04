@@ -2,32 +2,29 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using System;
 
 public class LetterTile : MonoBehaviour
 {
-    //private Grid _tilePosition;
-    //public Grid TilePosition { get => _tilePosition; set => _tilePosition = value; }
+    [NonSerialized] public bool isMoving = false;
 
-    public bool isMoving = false;
     private Vector2 _newPosition;
-
 
     public void Init(Vector2 position, Vector2 size, string letter)
     {
         transform.localPosition = position;
         GetComponent<RectTransform>().sizeDelta = size;
         GetComponent<TMP_Text>().text = letter;
-        //_tilePosition = grid;
     }
 
     public void MoveTo(Vector2 position)
     {
         _newPosition = position;
         isMoving = true;
-        StartCoroutine(Lerp());
+        StartCoroutine(MovingLerp());
     }
 
-    IEnumerator Lerp()
+    IEnumerator MovingLerp()
     {
         float timeElapsed = 0;
         AnimationCurve curve = AnimationCurve.EaseInOut(timeElapsed, 0, GameConfig.GetMixingLerpTime(), 1);
